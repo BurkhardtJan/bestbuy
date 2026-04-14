@@ -1,4 +1,8 @@
 class Product:
+    """
+    Represents a product in the store.
+    """
+
     def __init__(self, name, price, quantity):
         if name == "":
             raise ValueError("Product name cannot be empty.")
@@ -12,26 +16,50 @@ class Product:
         self.active = True
 
     def get_quantity(self) -> int:
+        """
+        Returns the quantity of the product.
+        """
         return self.quantity
 
     def set_quantity(self, quantity):
+        """
+        Sets the quantity of the product.
+        """
         self.quantity -= quantity
         if (self.quantity <= 0):
             self.deactivate()
 
     def is_active(self) -> bool:
+        """
+        Returns whether the product is active.
+        :return:
+        """
         return self.active
 
     def activate(self):
+        """
+        Activates the product.
+        :return:
+        """
         self.active = True
 
     def deactivate(self):
+        """
+        Deactivates the product.
+        :return:
+        """
         self.active = False
 
     def show(self):
-        print(f"{self.name}, Price: {self.price}, Quantity: {self.quantity}")
+        """
+        Prints the product.
+        """
+        print(f"{self.name}, Price: ${self.price}, Quantity: {self.quantity}")
 
     def buy(self, quantity) -> float:
+        """
+        Buys the product. Handles problems.
+        """
         if self.quantity >= quantity and self.is_active():
             self.set_quantity(quantity)
             return self.price * quantity

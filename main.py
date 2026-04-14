@@ -9,15 +9,12 @@ MENU = """
 3. Make an order
 4. Quit
 """
-# setup initial stock of inventory
-product_list = [products.Product("MacBook Air M2", price=1450, quantity=100),
-                products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),
-                products.Product("Google Pixel 7", price=500, quantity=250)
-                ]
-best_buy = store.Store(product_list)
 
 
 def list_products(my_store):
+    """
+    Prints out all products in store
+    """
     print("------")
     i = 1
     for product in my_store.get_all_products():
@@ -27,11 +24,19 @@ def list_products(my_store):
 
 
 def print_amount(my_store):
+    """
+    Prints out the amount of products in store
+
+    """
     quantity = my_store.get_total_quantity()
     print(f"Total of {quantity} items in store")
 
 
 def make_order(my_store):
+    """
+    Handels inputs for orders and the order itself.
+    Negative amount interpreted as return, because same behavior in the demo.
+    """
     list_products(best_buy)
     print("When you want to finish order, enter empty text.")
     shopping_list = []
@@ -44,12 +49,15 @@ def make_order(my_store):
         try:
             product = all_products[int(item) - 1]
             quantity = int(quantity)
+            if int(item) <= 0:
+                raise IndexError
         except IndexError:
             print("Error adding product!")
         except ValueError:
             print(f"Error while making order! invalid literal for int() with base 10: '{quantity}'")
         else:
             shopping_list.append((product, quantity))
+            print("Product added to list!")
     try:
         payment = my_store.order(shopping_list)
         print(f"Order made! Total payment: ${payment}")
@@ -57,16 +65,19 @@ def make_order(my_store):
         print(e)
 
 
-def start():
+def start(my_store):
+    """
+    Main Loop, shows menu and handels inputs.
+    """
     while True:
         print(MENU)
         choice = input("Please choose a number: ")
         if choice == "1":
-            list_products(best_buy)
+            list_products(my_store)
         elif choice == "2":
-            print_amount(best_buy)
+            print_amount(my_store)
         elif choice == "3":
-            make_order(best_buy)
+            make_order(my_store)
         elif choice == "4":
             quit()
         else:
@@ -74,4 +85,10 @@ def start():
 
 
 if __name__ == "__main__":
-    start()
+    # setup initial stock of inventory
+    product_list = [products.Product("MacBook Air M2", price=1450, quantity=100),
+                    products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),
+                    products.Product("Google Pixel 7", price=500, quantity=250)
+                    ]
+    best_buy = store.Store(product_list)
+    start(best_buy)
