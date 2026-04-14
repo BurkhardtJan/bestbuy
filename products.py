@@ -15,7 +15,7 @@ class Product:
         return self.quantity
 
     def set_quantity(self, quantity):
-        self.quantity = quantity
+        self.quantity -= quantity
         if (self.quantity <= 0):
             self.deactivate()
 
@@ -36,7 +36,7 @@ class Product:
             self.set_quantity(quantity)
             return self.price * quantity
         else:
-            raise ValueError("Not enough items in stock.")
+            raise ValueError("Error while making order! Quantity larger than what exists")
 
 
 if __name__ == '__main__':
